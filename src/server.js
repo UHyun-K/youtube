@@ -9,15 +9,9 @@ const PORT = 4000;
 const app = express();//create Express aplication
 const logger = morgan("dev");
 
+app.set("views", process.cwd() + "/src/views");
+app.set("view engine", "pug");
 app.use(logger);
-
-/*
-const logger = (req, res, next) => {
-  console.log(`${req.method}${req.url}`);
-  next();
-}*/
-
-
 app.use("/", globalRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
