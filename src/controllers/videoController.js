@@ -41,15 +41,23 @@ export const getEdit = (req, res) => {
 export const postEdit = (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
-  vidoes[id - 1].title = title;
+  videos[id - 1].title = title;
   return res.redirect(`/videos/${id}`);
 }
-
-export const upload = (req, res) => res.send("Upload");
-export const deleteVideo = (req, res) => {
-  console.log(req.params);
-  return res.send("Delete video")
-};
-
-
+export const getUpload = (req, res) => {
+  return res.render("upload", { pageTitle: "Upload video" });
+}
+export const postUpload = (req, res) => {
+  const { title } = req.body;
+  const newVideo = {
+    title,
+    rating: 5,
+    comments: 2,
+    createdAt: "just now",
+    views: 1,
+    id: videos.length + 1,
+  };
+  videos.push(newVideo);
+  return res.redirect("/");
+}
 
