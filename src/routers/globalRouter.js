@@ -10,7 +10,6 @@ const globalRouter = express.Router();  //create global router
 globalRouter.get('/', trending); //config globla router
 globalRouter.get('/join', join);
 globalRouter.get('/login', login);
-globalRouter.get('/search', search);
 
 
 export default globalRouter; //export golbal router  파일 전체가 아닌 globalRouter 라는 "변수"만 export
