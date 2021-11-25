@@ -1,3 +1,4 @@
+import "./db"; //파일 자체를 임포트 
 import express from "express";//import express nodemodules/express/index.js
 import morgan from "morgan";
 import globalRouter from "./routers/globalRouter";
@@ -20,5 +21,5 @@ app.use("/users", userRouter);
 
 
 
-const handleListen = () => console.log(`server listening port  http://localhost:${PORT}🔥`);
+const handleListen = () => console.log(`✅server listening port  http://localhost:${PORT}🔥`);
 app.listen(PORT, handleListen);
