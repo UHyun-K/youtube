@@ -1,5 +1,6 @@
 import "./db"; //파일 자체를 임포트 
 import "./models/Video";
+import "./models/User";
 import app from "./server";
 
 const PORT = 4000;

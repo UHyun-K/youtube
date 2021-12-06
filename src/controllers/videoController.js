@@ -3,7 +3,7 @@ import Video from "../models/Video";
 //Video.find({}, (error, videos) => { });
 
 export const home = async (req, res) => {
-  const videos = await Video.find({});
+  const videos = await Video.find({}).sort({ createdAt: "desc" });
   return res.render("home", { pageTitle: "Home", videos });
 };
 
@@ -64,4 +64,18 @@ export const deleteVideo = async (req, res) => {
   await Video.findByIdAndDelete(id);
   //delete video
   return res.redirect("/");
+}
+
+export const search = async (req, res) => {
+  const { keyword } = req.query; //req.query is for the URL data.  form when we use get method
+  let videos = [];
+  if (keyword) {  //페이지에 들어왔을 때  keyword=undefined
+    videos = await Video.find({
+      title: {
+        $regex: new RegExp(keyword, "i")
+      },
+    });
+    console.log(videos);
+  }
+  return res.render("search", { pageTitle: "Search", videos });
 }
