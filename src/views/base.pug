@@ -5,17 +5,26 @@ html(lang ="ko")
         link(rel ="stylesheet" href="https://unpkg.com/mvp.css")
     body 
         header 
-            h1= pageTitle
+            h1 Who is sexy? #{sexy}
             nav   
                 ul  
                     li 
-                        a(href="/videos/upload") Upload video
-                    li 
                         a(href="/") Home
+                    if loggedIn 
+                        li 
+                            a(href="/logout") Logout
+                        li
+                            a(href="/my-profie") #{loggedInUser.name}의 Profile
+                    else
+                        li 
+                            a(href="/join") Join 
+                        li 
+                            a(href="/Login") Login 
+                    li 
+                        a(href="/videos/upload") Upload video   
                     li 
                         a(href="/search") Search
-                    li 
-                        a(href="/join") Join 
+       
         main
             block content
     include partials/footer

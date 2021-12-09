@@ -1,3 +1,4 @@
+import "dotenv/config";
 import "./db"; //파일 자체를 임포트 
 import "./models/Video";
 import "./models/User";
