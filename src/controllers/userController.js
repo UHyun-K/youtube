@@ -1,5 +1,7 @@
 import User from "../models/User";
+import fetch from "node-fetch";
 import bcrypt from "bcrypt";
+
 
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 export const postJoin = async (req, res) => {
@@ -59,6 +61,37 @@ export const postLogin = async (req, res) => {
     req.session.loggedIn = true;
     req.session.user = user;
     return res.redirect("/");
+}
+export const startGithubLogin = (req, res) => {
+    const baseUrl = `https://github.com/login/oauth/authorize`;
+    const config = {
+        client_id: process.env.GH_CLIENT,
+        allow_signup: false,
+        scope: "read:user user:email",
+    }
+    const params = new URLSearchParams(config).toString();
+    const finalUrl = `${baseUrl}?${params}`;
+    return res.redirect(finalUrl);
+}
+
+export const finishGithubLogin = async (req, res) => {
+    const baseUrl = `https://github.com/login/oauth/authorize`;
+    const config = {
+        client_id: process.env.GH_CLIENT,
+        clinet_secret: process.env.GH_SECRET,
+        code: req.query.code,
+    }
+    const params = new URLSearchParams(config).toString();
+    const finalUrl = `${baseUrl}?${params}`;
+    const data = await fetch(finalUrl, {
+        method: "POST",  //finalUrl 에 POST요청 보낼 것임 fetch로 데이터받아오고 
+        headers: {
+            Accept: "application/json" //JSON을 return받기위해서는
+        },
+    })
+    const json = await data.json();//그데이터에서 json을 추출  
+    console.log(json);
+    res.send(JSON.stringify(json));
 }
 export const edit = (req, res) => res.render("edit");
 export const remove = (req, res) => res.send("Remove user");
