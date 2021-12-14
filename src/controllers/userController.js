@@ -44,7 +44,7 @@ export const getLogin = (req, res) => res.render("login", { pageTitle: "Login" }
 export const postLogin = async (req, res) => {
     const { username, password } = req.body;
     const pageTitle = "Login";
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username , socialOnly :false});
     if (!user) {
         return res.status(400).render("login", {
             pageTitle,
@@ -75,28 +75,70 @@ export const startGithubLogin = (req, res) => {
 }
 
 export const finishGithubLogin = async (req, res) => {
-    const baseUrl = `https://github.com/login/oauth/authorize`;
+    const baseUrl = "https://github.com/login/oauth/access_token";
     const config = {
         client_id: process.env.GH_CLIENT,
-        clinet_secret: process.env.GH_SECRET,
+        client_secret: process.env.GH_SECRET,
         code: req.query.code,
     }
     const params = new URLSearchParams(config).toString();
     const finalUrl = `${baseUrl}?${params}`;
-    const data = await fetch(finalUrl, {
-        method: "POST",  //finalUrl 에 POST요청 보낼 것임 fetch로 데이터받아오고 
+    const tokenRequest = await(
+        await fetch(finalUrl, {
+        method: "POST",
         headers: {
-            Accept: "application/json" //JSON을 return받기위해서는
-        },
-    })
-    const json = await data.json();//그데이터에서 json을 추출  
-    console.log(json);
-    res.send(JSON.stringify(json));
+            Accept: "application/json",
+            },
+      })).json();
+    if("access_token" in tokenRequest){
+        //access api
+        const {access_token}= tokenRequest;
+        const apiUrl = "https://api.github.com"
+        const userData = await(
+            await fetch(`${apiUrl}/user`,{
+            headers:{
+                Authorization: `token ${access_token}`,
+            }
+        })
+        ).json();
+        console.log(userData); 
+        const emailData = await(
+            await fetch(`${apiUrl}/user/emails`,{
+                headers:{
+                    Authorization: `token ${access_token}`,
+                }
+        })
+        ).json();
+        const emailObj = emailData.find(
+            email => email.primary === true && email.verified ===true
+            );
+        if(!emailObj){
+            return res.redirect("/login");
+        }
+        let user = await User.findOne({email: emailObj.email});
+        if(!user){
+            user = await User.create({
+                avatarUrl: userData.avatar_url,
+                name: userData.name ? userData.name : userData.login,
+                username:userData.login,
+                email: emailObj.email,
+                password:"",
+                socialOnly:true,
+                location:userData.location,
+          });
+        }
+         req.session.loggedIn = true;
+          req.session.user = user;
+          return res.redirect("/");
+    }else{
+        return res.redirect("/login");
+    }
 }
 export const edit = (req, res) => res.render("edit");
-export const remove = (req, res) => res.send("Remove user");
-
-export const logout = (req, res) => res.send("Logout");
+export const logout = (req, res) => {
+    req.session.destroy();
+    return res.redirect("/")
+}
 export const see = (req, res) => res.send("See user");
 
 
