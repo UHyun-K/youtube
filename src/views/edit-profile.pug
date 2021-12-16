@@ -10,3 +10,7 @@ block content
         input(placeholder="Email", name="email", type="email", required, value=loggedInUser.email)
         input(placeholder="Location", name="location", type="text", required, value=loggedInUser.location)
         input(type="submit" value="Save") 
+
+    if !loggedIn.socialOnly
+        hr
+        a(href="change-password") Change Password &rarr;
