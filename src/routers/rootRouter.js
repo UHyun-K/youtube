@@ -2,14 +2,15 @@ import express from "express"; //자바스크립트에서는 모든 파일이 �
 //하나의 파일에서 돌아가는 환경 만들어야함 ,모듈 개별적임 
 import { getJoin, postJoin, getLogin, postLogin } from "../controllers/userController";
 import { home, search } from "../controllers/videoController";
+import { publicOnlyMiddleware } from "../middlewares";
 
 const rootRouter = express.Router();  //create global router
 
 
 
 rootRouter.get('/', home); //config globla router
-rootRouter.route('/join').get(getJoin).post(postJoin);
-rootRouter.route('/login').get(getLogin).post(postLogin);
+rootRouter.route('/join').all(publicOnlyMiddleware).get(getJoin).post(postJoin);
+rootRouter.route('/login').all(publicOnlyMiddleware).get(getLogin).post(postLogin);
 rootRouter.get('/search', search);
 
 
