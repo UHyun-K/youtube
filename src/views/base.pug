@@ -12,11 +12,13 @@ html(lang ="ko")
                         a(href="/") Home
                     if loggedIn 
                         li
+                            a(href=`/users/${loggedInUser._id}` ) My Profile
+                        li
                             a(href="/users/edit") Edit Profile
-                        li 
-                            a(href="/users/logout") Logout
                         li      
-                            a(href="/videos/upload") Upload video   
+                            a(href="/videos/upload") Upload video  
+                        li 
+                            a(href="/users/logout") Logout 
                         
                     else
                         li 
