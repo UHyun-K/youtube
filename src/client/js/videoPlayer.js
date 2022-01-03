@@ -12,6 +12,7 @@ const fullScreenIcon = fullScreenBtn.querySelector("i");
 const videoContainer = document.getElementById("videoContainer");
 const videoControls = document.getElementById("videoControls");
 
+
 let controlsTimeout = null;
 let controlsMovementTimeout = null;
 let volumeValue =0.5;
@@ -116,8 +117,14 @@ const handleKeydown = (e) =>{
         hanldePlayClick();
     }
 }
+const handleEnded =()=>{
+    const {id}= videoContainer.dataset;
+    fetch(`/api/videos/${id}/view`,{
+        method: "POST",
+    });
+}
 if (video.readyState === 4) {
-    handleLoadedMetadata();
+    handleLoadedMetaData( );
 }
 
 playBtn.addEventListener("click", hanldePlayClick);
@@ -126,8 +133,10 @@ volumeRange.addEventListener("input", handleVolumeChange);
 video.addEventListener("loadedmetadata", handleLoadedMetaData);
 video.addEventListener("timeupdate", handleTimeUpdate);
 video.addEventListener("click", hanldePlayClick);
+video.addEventListener("ended", handleEnded);
 videoContainer.addEventListener("mousemove", handleMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
 timeline.addEventListener("input", handleTimelineChange);
 fullScreenBtn.addEventListener("click", handleFullscreen);
 window.addEventListener("keydown", handleKeydown);
+
