@@ -54,6 +54,7 @@ export const postEdit = async (req, res) => {
     description,
     hashtags: Video.formatHashtags(hashtags),
   })
+  req.flash("ok","changes saved" );
   return res.redirect(`/videos/${id}`);
 }
 export const getUpload = (req, res) => {
@@ -97,7 +98,9 @@ export const deleteVideo = async (req, res) => {
     return res.status(404).render("404", { pageTitle: "Video not found" });
   }
   if (String(video.owner._id) !== String(_id)){
+    req.flash("error","Not Authorized");
     return res.status(403).redirect("/");
+
   }
   await Video.findByIdAndDelete(id);
   user.videos.splice(user.videos.indexOf(id),1);
