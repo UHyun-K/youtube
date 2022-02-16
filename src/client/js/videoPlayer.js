@@ -113,9 +113,10 @@ const handleFullscreen = () => {
   }
 
 const handleKeydown = (e) =>{
-    if(e.keyCode == 32){
+    if((e.target !== textarea) && e.keyCode == 32){
         hanldePlayClick();
     }
+
 }
 const handleEnded =()=>{
     const {id}= videoContainer.dataset;

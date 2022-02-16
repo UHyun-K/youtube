@@ -10,7 +10,10 @@ const videoSchema = mongoose.Schema({
         views: { type: Number, default: 0 },
         rating: { type: Number, default: 0 },
     },
-    owner:{type: mongoose.Schema.Types.ObjectId , required:true, ref:"User"}
+    comments:[
+        { type: mongoose.Schema.Types.ObjectId, ref:'Comment' },
+    ],
+    owner:{ type: mongoose.Schema.Types.ObjectId , required:true, ref:'User'},
 });
 
 videoSchema.static('formatHashtags', function (hashtags) {

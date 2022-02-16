@@ -32,3 +32,4 @@ export const  videoUpload = multer({
     limits:{
         fileSize: 10000000,
 }})
+
