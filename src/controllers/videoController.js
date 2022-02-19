@@ -27,7 +27,6 @@ export const getEdit = async (req, res) => {
   } = req.session;
   console.log(_id);
   const video = await Video.findById(id).populate("owner");
-  console.log(video.owner);
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Video not found" })
   }
@@ -94,7 +93,7 @@ export const deleteVideo = async (req, res) => {
     user: {  _id },
   } = req.session;
   const video = await Video.findById(id);
-  const user = await User.findBuId(id);
+  const user = await User.findById(id);
   if(!video){
     return res.status(404).render("404", { pageTitle: "Video not found" });
   }
@@ -150,5 +149,32 @@ export const createComment = async (req, res) => {
   });
   video.comments.push(comment._id);
   video.save();
-  return res.sendStatus(201);
+  return res.status(201).json({newCommentId: comment._id});
 };
+
+export const deleteComment= async(req,res)=>{
+  
+  const {
+    body:{ id : commentId },
+    session: {
+      user:{ _id : userId}
+    },
+  }= req;
+  const comment =await Comment.findById(commentId);
+  const ownerId = String(comment.owner);
+  if(userId !== ownerId){
+    req.flash("error","Not Authorized");
+    return res.status(403).redirect("/");
+  } 
+  await Comment.findByIdAndDelete(commentId);
+  const video= await Video.findOne({comments:commentId});
+  let targetId= null;
+  for(let i=0; i < video.comments.length; i++ ){
+    if(String(video.comments[i]) === String(commentId)){
+      targetId = video.comments[i];
+    }
+  }
+  video.comments.splice(video.comments.indexOf(targetId), 1);
+  video.save();
+  return res.sendStatus(200);
+}

@@ -32,10 +32,17 @@ block content
 
    if loggedIn
       div.video__add-comments
-         form.video__comments-form#commentForm
+         form.video__comment-form#commentForm
             textarea(cols="30", rows="10", placeholder="Write a nice  comment...")
             button Add Comment
-   
+   div.video__comments
+      ul
+         each comment in video.comments.reverse()
+               li.video__comment(data-Id=comment._id)
+                  i.fas.fa-comment
+                  span #{comment.text}
+                  if String(comment.owner._id) === String(loggedInUser._id)
+                     span.removeBtn ❌
          
 block scripts 
    script(src="/static/js/videoPlayer.js")
