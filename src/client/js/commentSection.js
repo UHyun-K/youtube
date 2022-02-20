@@ -63,7 +63,8 @@ if(form){
         body: JSON.stringify({ id }),
     });
     li.remove();
-    
+    console.log(removeBtns);
   }
   const removeBtns = document.querySelectorAll(".removeBtn");
+
   removeBtns.forEach((i)=> i.addEventListener("click", deleteComment ));

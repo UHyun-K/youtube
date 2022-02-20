@@ -1,21 +1,23 @@
 {
-  "name": "wetube",
+  "name": "youtube",
   "version": "1.0.0",
   "description": "The best way to watch videos.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nomadcoders/wetube-reloaded.git"
+    "url": "git+https://github.com/UHyun-K/youtube.git"
   },
   "scripts": {
+    "start": "node build/init.js",
+    "build:server": "babel src -d build",
     "dev:server": "nodemon",
-    "dev:assets": "webpack "
+    "dev:assets": "webpack ",
   },
-  "author": "Nicolas Serrano <nico@nomadcoders.co>",
+  "author": "yuhyun",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nomadcoders/wetube-reloaded/issues"
+    "url": "",
   },
-  "homepage": "https://github.com/nomadcoders/wetube-reloaded#readme",
+  "homepage": "",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
@@ -33,7 +35,8 @@
     "regenerator-runtime": "^0.13.9"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.0",
+    "@babel/cli": "^7.17.3",
+    "@babel/core": "^7.17.5",
     "@babel/node": "^7.16.0",
     "@babel/preset-env": "^7.13.10",
     "babel-loader": "^8.2.3",

@@ -113,6 +113,7 @@ const handleFullscreen = () => {
   }
 
 const handleKeydown = (e) =>{
+    const textarea = document.querySelector("textarea");
     if((e.target !== textarea) && e.keyCode == 32){
         hanldePlayClick();
     }
