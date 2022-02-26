@@ -150,6 +150,7 @@ export const postEdit= async (req, res)=>{
         body: { name, email, username, location},
         file,
     }=req;
+    console.log(req.file);
     const existUsername = await User.findOne({username});
     const existEmail = await User.findOne({email});
     if(
@@ -161,7 +162,6 @@ export const postEdit= async (req, res)=>{
 
     const updatedUser= await  User.findByIdAndUpdate(
         _id,
-
     {
         avatarUrl: file ? file.location : avatarUrl,
         name,
@@ -171,7 +171,6 @@ export const postEdit= async (req, res)=>{
     },
     { new: true }
     );
-    console.log(file);
     req.session.user = updatedUser;
     return res.redirect("/users/edit");
 }
