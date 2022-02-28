@@ -6,6 +6,7 @@ const form = document.getElementById("commentForm");
 const addComment = (text,id)=>{
     const videoComments = document.querySelector(".video__comments ul")
     const newComment = document.createElement("li");
+    const removeBtns = newComment.querySelectorAll(".removeBtn");
     newComment.dataset.id = id;
     newComment.className= "video__comment";
     const icon = document.createElement("i");
@@ -19,6 +20,7 @@ const addComment = (text,id)=>{
     newComment.appendChild(span);
     newComment.appendChild(span2);
     videoComments.prepend(newComment);
+    removeBtns.forEach((i)=> i.addEventListener("click", deleteComment ));
 }
 
 const handleSubmit = async(event) => {
@@ -68,3 +70,4 @@ if(form){
   const removeBtns = document.querySelectorAll(".removeBtn");
 
   removeBtns.forEach((i)=> i.addEventListener("click", deleteComment ));
+
