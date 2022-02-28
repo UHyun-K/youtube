@@ -3,16 +3,16 @@ import multerS3 from "multer-s3";
 import aws from "aws-sdk";
 
 const s3 = new aws.S3({
-    credentials:{
+    credentials: {
         accessKeyId: process.env.AWS_ID,
         secretAccessKey: process.env.AWS_SECRET,
-    }
+    },
 })
 
 const multerUploader = multerS3({
     s3: s3,
-    bucket: 'youtube-cloning-site',
-    acl: "public- read",
+    bucket: "youtube-cloning-site",
+    acl: "public-read",
 })
 
 export const localsMiddleware = (req, res, next) => {
