@@ -160,10 +160,11 @@ export const postEdit= async (req, res)=>{
         return res.render("edit-profile",{pageTtile: "Edit Profile", errorMessage:"username/email is already taken"})
     }
 
+    const = isHeroku = process.env.NODE_ENV === "production";
     const updatedUser= await  User.findByIdAndUpdate(
         _id,
     {
-        avatarUrl: file ? file.location : avatarUrl,
+        avatarUrl: file ? (isHeroku ? file.location : file.path) : avatarUrl,
         name,
         email,
         username,
