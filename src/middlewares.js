@@ -58,5 +58,6 @@ export const  videoUpload = multer({
         fileSize: 10000000,
     },
     storage: isHeroku ? s3VideoUploader : undefined ,
+    contentType: multerS3.AUTO_CONTENT_TYPE,
 })
 
